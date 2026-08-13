@@ -37,8 +37,22 @@ jobs:
             # Manual input: deploy specific agent
             AGENTS='["${{ github.event.inputs.agent_name }}"]'
           else
-            # Auto-detect: find all agents with Dockerfile
-            AGENTS=$(find agents -maxdepth 2 -name "Dockerfile" -exec dirname {} \; | xargs -I {} basename {} | jq -R . | jq -s . || echo '[]')
+            # Auto-detect: find all agent directories with Dockerfile
+            AGENTS_LIST=()
+            if [ -d "agents" ]; then
+              for agent_dir in agents/*/; do
+                if [ -f "${agent_dir}Dockerfile" ]; then
+                  agent_name=$(basename "$agent_dir")
+                  AGENTS_LIST+=("\"$agent_name\"")
+                fi
+              done
+            fi
+
+            if [ ${#AGENTS_LIST[@]} -eq 0 ]; then
+              AGENTS='[]'
+            else
+              AGENTS='['"$(IFS=,; echo "${AGENTS_LIST[*]}")"']'
+            fi
           fi
           echo "agents=$AGENTS" >> "$GITHUB_OUTPUT"
           echo "Detected agents: $AGENTS"
