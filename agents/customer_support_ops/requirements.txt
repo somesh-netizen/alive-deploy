@@ -1,0 +1,14 @@
+neuro-san==0.6.63
+langchain-openai
+langchain-anthropic
+langchain-google-genai
+langchain-postgres
+asyncpg
+tiktoken
+leaf-common
+pyhocon
+pymysql
+fastapi
+uvicorn[standard]
+httpx
+websockets

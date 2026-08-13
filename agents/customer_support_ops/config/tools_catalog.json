@@ -1,0 +1,698 @@
+{
+  "configurable": [
+    {
+      "id": "tavily",
+      "label": "Web Search (Tavily)",
+      "category": "Search",
+      "icon": "globe",
+      "kind": "coded_tool",
+      "class": "tavily_search.TavilySearch",
+      "needs_connection": true,
+      "description": "Grounded web search via Tavily; returns cited results.",
+      "user": false,
+      "fields": [
+        {
+          "name": "api_key",
+          "label": "API key",
+          "type": "password",
+          "required": true
+        }
+      ],
+      "sly_key": "tavily",
+      "function": {
+        "description": "Search the web for up-to-date information and return cited results.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The search query."
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pinecone",
+      "label": "PineconeTool",
+      "category": "Vector store",
+      "icon": "boxes",
+      "kind": "coded_tool",
+      "class": "pinecone_tool.PineconeTool",
+      "needs_connection": true,
+      "description": "Semantic search and retrieval over an embedded knowledge base.",
+      "user": false,
+      "fields": [
+        {
+          "name": "api_key",
+          "label": "API key",
+          "type": "password",
+          "required": false
+        },
+        {
+          "name": "namespace",
+          "label": "Namespace",
+          "type": "text"
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "required": true,
+          "default": "",
+          "description": ""
+        }
+      ],
+      "sly_key": "pinecone",
+      "function": {
+        "description": "Semantic search over the Pinecone vector index; returns the most relevant passages.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The natural-language query to embed and search."
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mysql",
+      "label": "MySQL Database",
+      "category": "Database",
+      "icon": "database",
+      "kind": "coded_tool",
+      "class": "mysql.MySqlTool",
+      "sly_key": "mysql",
+      "needs_connection": true,
+      "description": "Run parameterised SQL queries against a MySQL database.",
+      "function": {
+        "description": "Run a read-only SELECT against the connected MySQL database and return rows. First inspect information_schema to learn the tables/columns; before filtering a text column, check its real DISTINCT values.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "sql": {
+              "type": "string",
+              "description": "The SQL SELECT query to run."
+            }
+          },
+          "required": [
+            "sql"
+          ]
+        }
+      },
+      "fields": [
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "port",
+          "label": "Port",
+          "type": "text",
+          "default": "3306"
+        },
+        {
+          "name": "database",
+          "label": "Database",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "username",
+          "label": "Username",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "password",
+          "label": "Password",
+          "type": "password",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "mysql_connector",
+      "label": "MySql connector",
+      "category": "Custom",
+      "icon": "database",
+      "kind": "coded_tool",
+      "class": "mysql_connector.MySqlConnector",
+      "needs_connection": true,
+      "description": "",
+      "user": true,
+      "fields": [
+        {
+          "name": "host",
+          "label": "host",
+          "type": "text",
+          "required": true,
+          "default": "127.0.0.1",
+          "description": ""
+        },
+        {
+          "name": "port",
+          "label": "port",
+          "type": "number",
+          "required": true,
+          "default": "3306",
+          "description": ""
+        },
+        {
+          "name": "username",
+          "label": "username",
+          "type": "text",
+          "required": true,
+          "default": "alive",
+          "description": ""
+        },
+        {
+          "name": "password",
+          "label": "password",
+          "type": "password",
+          "required": true,
+          "default": "alive_pw",
+          "description": ""
+        },
+        {
+          "name": "database",
+          "label": "database",
+          "type": "text",
+          "required": true,
+          "default": "alive_demo",
+          "description": ""
+        }
+      ],
+      "sly_key": "mysql_connector",
+      "test": "mysql",
+      "function": {
+        "description": "MySql connector",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The request for this tool."
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    },
+    {
+      "id": "vector_search",
+      "label": "Vector Search",
+      "category": "RAG & retrieval",
+      "icon": "boxes",
+      "kind": "coded_tool",
+      "class": "toolbox.vector_search.VectorSearchTool",
+      "needs_connection": true,
+      "sly_key": "vector_store",
+      "test": "vector",
+      "user": false,
+      "description": "Semantic search over the configured vector index; returns relevant passages.",
+      "fields": [
+        {
+          "name": "backend",
+          "label": "Backend",
+          "type": "select",
+          "default": "pgvector",
+          "options": [
+            "pgvector",
+            "chroma",
+            "pinecone",
+            "azure_ai_search",
+            "in_memory"
+          ]
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "show_if": {
+            "backend": "pgvector"
+          },
+          "required": true
+        },
+        {
+          "name": "port",
+          "label": "Port",
+          "type": "number",
+          "show_if": {
+            "backend": "pgvector"
+          },
+          "default": "5432"
+        },
+        {
+          "name": "database",
+          "label": "Database",
+          "type": "text",
+          "show_if": {
+            "backend": "pgvector"
+          },
+          "required": true
+        },
+        {
+          "name": "user",
+          "label": "User",
+          "type": "text",
+          "show_if": {
+            "backend": "pgvector"
+          }
+        },
+        {
+          "name": "password",
+          "label": "Password",
+          "type": "password",
+          "show_if": {
+            "backend": "pgvector"
+          }
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "show_if": {
+            "backend": "chroma"
+          }
+        },
+        {
+          "name": "port",
+          "label": "Port",
+          "type": "number",
+          "show_if": {
+            "backend": "chroma"
+          },
+          "default": "8000"
+        },
+        {
+          "name": "api_key",
+          "label": "API key",
+          "type": "password",
+          "show_if": {
+            "backend": "pinecone"
+          }
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "show_if": {
+            "backend": "pinecone"
+          }
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "type": "text",
+          "show_if": {
+            "backend": "azure_ai_search"
+          }
+        },
+        {
+          "name": "api_key",
+          "label": "API key",
+          "type": "password",
+          "show_if": {
+            "backend": "azure_ai_search"
+          }
+        },
+        {
+          "name": "index",
+          "label": "Index / collection / table",
+          "type": "text"
+        },
+        {
+          "name": "namespace",
+          "label": "Namespace",
+          "type": "text"
+        },
+        {
+          "name": "embedding_model",
+          "label": "Embedding model",
+          "type": "text",
+          "default": "text-embedding-3-small"
+        },
+        {
+          "name": "embedding_dimensions",
+          "label": "Embedding dimensions",
+          "type": "number",
+          "default": "1536"
+        },
+        {
+          "name": "api_key",
+          "label": "Embedding API key",
+          "type": "password",
+          "sly_key": "embeddings"
+        }
+      ],
+      "function": {
+        "description": "Semantic search over the configured vector index; returns the most relevant passages.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The natural-language query to embed and search."
+            },
+            "top_k": {
+              "type": "string",
+              "description": "Maximum number of passages to return (default 5)."
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      }
+    },
+    {
+      "id": "vector_ingest",
+      "label": "Vector Ingest",
+      "category": "RAG & retrieval",
+      "icon": "boxes",
+      "kind": "coded_tool",
+      "class": "toolbox.vector_ingest.VectorIngestTool",
+      "needs_connection": true,
+      "sly_key": "vector_store",
+      "test": "vector",
+      "user": false,
+      "action": "ingest",
+      "description": "Ingest documents into the configured vector index (ops/write path; not chat-exposed).",
+      "fields": [
+        {
+          "name": "backend",
+          "label": "Backend",
+          "type": "select",
+          "default": "pgvector",
+          "options": [
+            "pgvector",
+            "chroma",
+            "pinecone",
+            "azure_ai_search",
+            "in_memory"
+          ]
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "show_if": {
+            "backend": "pgvector"
+          },
+          "required": true
+        },
+        {
+          "name": "port",
+          "label": "Port",
+          "type": "number",
+          "show_if": {
+            "backend": "pgvector"
+          },
+          "default": "5432"
+        },
+        {
+          "name": "database",
+          "label": "Database",
+          "type": "text",
+          "show_if": {
+            "backend": "pgvector"
+          },
+          "required": true
+        },
+        {
+          "name": "user",
+          "label": "User",
+          "type": "text",
+          "show_if": {
+            "backend": "pgvector"
+          }
+        },
+        {
+          "name": "password",
+          "label": "Password",
+          "type": "password",
+          "show_if": {
+            "backend": "pgvector"
+          }
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "show_if": {
+            "backend": "chroma"
+          }
+        },
+        {
+          "name": "port",
+          "label": "Port",
+          "type": "number",
+          "show_if": {
+            "backend": "chroma"
+          },
+          "default": "8000"
+        },
+        {
+          "name": "api_key",
+          "label": "API key",
+          "type": "password",
+          "show_if": {
+            "backend": "pinecone"
+          }
+        },
+        {
+          "name": "host",
+          "label": "Host",
+          "type": "text",
+          "show_if": {
+            "backend": "pinecone"
+          }
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "type": "text",
+          "show_if": {
+            "backend": "azure_ai_search"
+          }
+        },
+        {
+          "name": "api_key",
+          "label": "API key",
+          "type": "password",
+          "show_if": {
+            "backend": "azure_ai_search"
+          }
+        },
+        {
+          "name": "index",
+          "label": "Index / collection / table",
+          "type": "text"
+        },
+        {
+          "name": "namespace",
+          "label": "Namespace",
+          "type": "text"
+        },
+        {
+          "name": "embedding_model",
+          "label": "Embedding model",
+          "type": "text",
+          "default": "text-embedding-3-small"
+        },
+        {
+          "name": "embedding_dimensions",
+          "label": "Embedding dimensions",
+          "type": "number",
+          "default": "1536"
+        },
+        {
+          "name": "chunk_size",
+          "label": "Chunk size",
+          "type": "number",
+          "default": "1000"
+        },
+        {
+          "name": "chunk_overlap",
+          "label": "Chunk overlap",
+          "type": "number",
+          "default": "200"
+        },
+        {
+          "name": "api_key",
+          "label": "Embedding API key",
+          "type": "password",
+          "sly_key": "embeddings"
+        }
+      ],
+      "function": {
+        "description": "Ingest documents from a source into the configured vector index.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "source_type": {
+              "type": "string",
+              "description": "The kind of source to ingest (e.g. 'pdf', 'webpage', 'inline')."
+            },
+            "loader_args": {
+              "type": "object",
+              "description": "Loader-specific arguments (e.g. file paths or URLs) for the chosen source_type."
+            }
+          },
+          "required": [
+            "source_type"
+          ]
+        }
+      }
+    },
+    {
+      "id": "memory_store",
+      "label": "Memory",
+      "category": "Memory",
+      "icon": "brain",
+      "kind": "coded_tool",
+      "class": "toolbox.memory_store.MemoryTool",
+      "needs_connection": true,
+      "sly_key": "memory",
+      "test": "tcp",
+      "user": false,
+      "description": "Read/write topic-scoped agent memory over the configured memory backend.",
+      "fields": [
+        {
+          "name": "backend",
+          "label": "Backend",
+          "type": "select",
+          "default": "in_memory",
+          "options": [
+            "in_memory",
+            "cosmos",
+            "dynamodb",
+            "firestore"
+          ]
+        },
+        {
+          "name": "endpoint",
+          "label": "Endpoint",
+          "type": "text",
+          "show_if": {
+            "backend": "cosmos"
+          },
+          "required": true
+        },
+        {
+          "name": "key",
+          "label": "Key",
+          "type": "password",
+          "show_if": {
+            "backend": "cosmos"
+          },
+          "required": true
+        },
+        {
+          "name": "database",
+          "label": "Database",
+          "type": "text",
+          "show_if": {
+            "backend": "cosmos"
+          },
+          "required": true
+        },
+        {
+          "name": "container",
+          "label": "Container",
+          "type": "text",
+          "show_if": {
+            "backend": "cosmos"
+          },
+          "required": true
+        },
+        {
+          "name": "region",
+          "label": "Region",
+          "type": "text",
+          "show_if": {
+            "backend": "dynamodb"
+          }
+        },
+        {
+          "name": "table",
+          "label": "Table",
+          "type": "text",
+          "show_if": {
+            "backend": "dynamodb"
+          },
+          "required": true
+        },
+        {
+          "name": "access_key_id",
+          "label": "Access key ID",
+          "type": "password",
+          "show_if": {
+            "backend": "dynamodb"
+          }
+        },
+        {
+          "name": "secret_access_key",
+          "label": "Secret access key",
+          "type": "password",
+          "show_if": {
+            "backend": "dynamodb"
+          }
+        },
+        {
+          "name": "project",
+          "label": "Project",
+          "type": "text",
+          "show_if": {
+            "backend": "firestore"
+          }
+        },
+        {
+          "name": "collection",
+          "label": "Collection",
+          "type": "text",
+          "show_if": {
+            "backend": "firestore"
+          },
+          "required": true
+        }
+      ],
+      "function": {
+        "description": "Store or retrieve topic-scoped memory for this agent and user.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "description": "The memory operation: 'read', 'write', 'search', 'list', or 'remove'."
+            },
+            "topic": {
+              "type": "string",
+              "description": "The topic key to read, write, or remove."
+            },
+            "content": {
+              "type": "string",
+              "description": "The content to store (for 'write') or the query text (for 'search')."
+            }
+          },
+          "required": [
+            "action"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,631 @@
+{
+  "anthropic_search": {
+    "class": "toolbox.anthropic_web_search.AnthropicWebSearch",
+    "description": "Tool that provides web search capabilities",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The text to search in."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "anthropic_code_execution": {
+    "class": "toolbox.anthropic_code_execution.AnthropicCodeExecution",
+    "description": "Executes Python code and performs tasks such as plotting, data analysis, or math using the Anthropic Code Execution tool.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "A natural language instruction or request to be executed by the code interpreter (e.g., a math problem, plotting instruction, or data transformation)."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "call_agent": {
+    "class": "toolbox.call_agent.CallAgent",
+    "description": "Call the agent to respond to inquiry.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "agent_name": {
+          "type": "string",
+          "description": "\n                    Name of the agent to call. Do not include file extension such as '.hocon' in the name.\n                    Always start the name with `/`.\n\n                    Example:\n                    \"agent_name\": \"/music_nerd\"\n\n                    Note:\n                    Some \"agent_name\" may have `/` like \"basic/music_nerd\".\n                    If that the case then use\n                    \"agent_name\": \"/basic/music_nerd\"\n                    "
+        },
+        "tool_args": {
+          "type": "object",
+          "description": "Arguments for the called agent."
+        }
+      },
+      "required": [
+        "inquiry"
+      ]
+    }
+  },
+  "agent_network_html_generator": {
+    "class": "toolbox.agent_network_html_generator.AgentNetworkHtmlGenerator",
+    "description": "Generate a html file from agent network hocon",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "agent_name": {
+          "type": "string",
+          "description": "Name of the agent to create html for. Do not include file extension such as '.hocon' in the name."
+        }
+      },
+      "required": [
+        "agent_name"
+      ]
+    }
+  },
+  "gmail_toolkit": {
+    "class": "langchain_google_community.gmail.toolkit.GmailToolkit",
+    "base_tool_info_url": "https://python.langchain.com/docs/integrations/tools/gmail/"
+  },
+  "send_gmail_message_with_attachment": {
+    "class": "toolbox.gmail_attachment.GmailAttachment",
+    "description": "Send an email with attachment",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of recipient email addresses"
+        },
+        "attachment_paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of absolute paths of the attached files"
+        },
+        "cc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of CC email addresses"
+        },
+        "bcc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of BCC email addresses"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject of the email"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message or body of the email"
+        }
+      },
+      "required": [
+        "to",
+        "attachment_path"
+      ]
+    }
+  },
+  "gemini_image_generation": {
+    "class": "toolbox.gemini_image_generation.GeminiImageGeneration",
+    "description": "Tool that generates image using Gemini models",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The prompt for image generation."
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "description": "Aspect ratio of the generated image (allowed values: 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9)."
+        },
+        "image_size": {
+          "type": "string",
+          "description": "Size of the generated image (allowed values: 1K, 2K, and 4K)."
+        },
+        "google_search": {
+          "type": "boolean",
+          "description": "Whether to use Google search to find information related to the query."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "jira_toolkit": {
+    "class": "langchain_community.agent_toolkits.jira.toolkit.JiraToolkit",
+    "args": {
+      "jira_api_wrapper": {
+        "class": "langchain_community.utilities.jira.JiraAPIWrapper"
+      }
+    },
+    "base_tool_info_url": "https://python.langchain.com/docs/integrations/tools/jira/"
+  },
+  "openai_search": {
+    "class": "toolbox.openai_web_search.OpenAIWebSearch",
+    "description": "Tool that provides web search capabilities",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The text to search in."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "openai_code_interpreter": {
+    "class": "toolbox.openai_code_interpreter.OpenAICodeInterpreter",
+    "description": "Executes Python code and performs tasks such as plotting, data analysis, or math using the OpenAI Code Interpreter tool.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "A natural language instruction or request to be executed by the code interpreter (e.g., a math problem, plotting instruction, or data transformation)."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "openai_image_generation": {
+    "class": "toolbox.openai_image_generation.OpenAIImageGeneration",
+    "description": "Tool that generates image using OpenAI tool",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The prompt for image generation."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "openai_video_generation": {
+    "class": "toolbox.openai_video_generation.OpenAIVideoGeneration",
+    "description": "Tool that generates video using OpenAI models",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The prompt for video generation."
+        },
+        "video_id": {
+          "type": "string",
+          "description": "The ID of an existing video to remix. If provided, the video will be remixed based on the prompt."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "confluence_rag": {
+    "class": "toolbox.confluence_rag.ConfluenceRag",
+    "description": "Retrieve information from the given confluence documents",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Query for retrieval"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "pdf_rag": {
+    "class": "toolbox.pdf_rag.PdfRag",
+    "description": "Retrieve information from the given PDF files",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Query for retrieval"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "webpage_rag": {
+    "class": "toolbox.webpage_rag.WebpageRag",
+    "description": "Retrieve information from the given webpages",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Query for retrieval"
+        },
+        "urls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of URLs to retrieve information from"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "wikipedia_rag": {
+    "class": "toolbox.wikipedia_rag.WikipediaRag",
+    "description": "Retrieve information from Wikipedia and answer a query using RAG.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Query for retrieval"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "wikimedia_media_search": {
+    "class": "toolbox.wikimedia_media_search.WikimediaMediaSearch",
+    "description": "\n        Searches Wikimedia Commons for media files (images, audio, video) and returns direct URLs with proper file extensions.\nThis tool is excellent for finding high-quality, properly licensed multimedia content from Wikimedia Commons.\nSupports searching for images, audio files (mp3, ogg, flac, wav), and video files (webm, ogv, mp4).\n        ",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The search query with KEYWORDS ONLY (no conversational phrases). Extract key terms from user request. \n                    Examples: 'nature video' (NOT 'show me nice nature video'), 'Einstein' (NOT 'photos of Einstein'), 'rain sound' (NOT 'find me rain sounds').\n                    For videos, include 'video', 'timelapse', or 'animation'. For audio, include 'sound' or 'audio'."
+        },
+        "media_type": {
+          "type": "string",
+          "description": "Type of media to search for: 'image', 'audio', 'video', or 'all' (default: 'image')"
+        },
+        "limit": {
+          "type": "int",
+          "description": "Maximum number of results to return (default: 1, maximum: 10)"
+        },
+        "offset": {
+          "type": "int",
+          "description": "Result offset for pagination (default: 0). Use 10, 20, 30, etc. to get different sets of results from the same query."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "arxiv_retriever": {
+    "class": "toolbox.arxiv_rag.ArxivRag",
+    "description": "This tool retrieves papers from arXiv using a query string.\n\nA query is a text string made of search terms and Boolean operators.\n\nSearch terms must use one of these prefixes:\n\nti = title\nau = author\nabs = abstract\nco = comment\njr = journal reference\ncat = subject category\nrn = report number\nid_list = arXiv article ID\n\nBoolean operators (must be uppercase): AND, OR, ANDNOT\n\nYou can group terms using parentheses ().\n\nExamples:\n\nquery='au:\"del maestro\"'\nquery='au:\"del maestro\" AND ti:checkerboard'\nquery='au:\"del maestro\" AND ti:\"quantum criticality\"'\nquery='au:\"Adrian Del Maestro\" AND au:\"Bernd Rosenow\"'\nquery='au:\"del maestro\" ANDNOT (ti:checkerboard OR ti:Pyrochlore)'\nquery=\"cat:quant-ph AND abs:entanglement\"\nquery=\"id_list:2301.01234\"\n\nRules:\n\n- Every search term must use a prefix\n- Author names with more than one word must be in quotes\n- Boolean operators must be uppercase\n- Use () to group Boolean expressions for Boolean operator precedence.\n- Use double quotes to group multiple words into phrases to search a particular field.\n- Pass the entire query as a single string\n",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Retrieval question to answer over arXiv documents"
+        },
+        "sort_by": {
+          "type": "string",
+          "description": "\nA property by which search results can be sorted.\nOptions are `relevance`, `lastUpdatedDate`, and `submittedDate`. Default to `relevance`.\n"
+        },
+        "sort_order": {
+          "type": "string",
+          "description": "\nOrder in which search results are sorted according to the specified `sort_by`.\nOptions are `ascending` and `descending`. Default to `descending`.\n"
+        },
+        "top_k_results": {
+          "type": "int",
+          "description": "The maximum number of results to be returned in an execution of this search. Default to 3"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "web_fetch": {
+    "class": "toolbox.web_fetch.WebFetch",
+    "description": "Fetches the content of a URL and returns its plain-text body along with metadata. Supports HTML pages and PDF documents.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL to fetch. Must use http or https scheme and be at most 250 characters."
+        },
+        "allowed_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional list of domains to allow. If set, only URLs whose domain matches one of these will be fetched."
+        },
+        "blocked_domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Optional list of domains to block. URLs whose domain matches one of these will be rejected."
+        },
+        "max_content_chars": {
+          "type": "int",
+          "description": "Maximum number of characters to return from the fetched content. Defaults to 20000."
+        }
+      },
+      "required": [
+        "url"
+      ]
+    }
+  },
+  "read_file": {
+    "class": "toolbox.file_management.read_file.ReadFile",
+    "description": "Reads the contents of a local text file (with optional line range and char cap) and returns the text plus metadata. Access is restricted by operator-configured allow/block lists for paths and extensions; the LLM cannot influence those lists.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "file_path": {
+          "type": "string",
+          "description": "Absolute or relative path to the file to read."
+        },
+        "start_line": {
+          "type": "int",
+          "description": "1-based line number to start reading from. Defaults to 1."
+        },
+        "end_line": {
+          "type": "int",
+          "description": "1-based line number to stop reading at (inclusive). Defaults to end of file."
+        },
+        "max_content_chars": {
+          "type": "int",
+          "description": "Maximum number of characters to return. Defaults to 20000."
+        }
+      },
+      "required": [
+        "file_path"
+      ]
+    }
+  },
+  "brave_search": {
+    "class": "toolbox.brave_search.BraveSearch",
+    "description": "Performs a web search using Brave Search.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "search_terms": {
+          "type": "string",
+          "description": "The query string or keywords to search for."
+        }
+      },
+      "required": [
+        "search_terms"
+      ]
+    }
+  },
+  "ddgs_search": {
+    "class": "toolbox.ddgs_search.DdgsSearch",
+    "description": "Performs a web search using DDGS Search.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "search_terms": {
+          "type": "string",
+          "description": "The query string or keywords to search for."
+        }
+      },
+      "required": [
+        "search_terms"
+      ]
+    }
+  },
+  "google_search": {
+    "class": "toolbox.google_search.GoogleSearch",
+    "description": "Performs a web search using Google Search.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "search_terms": {
+          "type": "string",
+          "description": "The query string or keywords to search for."
+        }
+      },
+      "required": [
+        "search_terms"
+      ]
+    }
+  },
+  "google_serper": {
+    "class": "toolbox.google_serper.GoogleSerper",
+    "description": "Search the web using Google Serper API with customizable parameters.\n        \n        Supports multiple search types (web, news, images, places) with geographic and language localization.\n        Returns structured search results with metadata for easy processing.\n        \n        Available parameters:\n        - query (required): The search term or question to look up online\n        - type (optional): Search type - 'search' (default, general web), 'news', 'images', or 'places'\n        - k (optional): Number of results to return (default: 10)\n        - gl (optional): Country code for geographic localization (default: 'us', e.g., 'uk', 'de', 'fr')\n        - hl (optional): Language code for search interface (default: 'en', e.g., 'es', 'fr', 'de')\n        - tbs (optional): Time-based search filter (e.g., 'qdr:d' for past day, 'qdr:w' for past week, 'qdr:m' for past month)\n        \n        Use this for: real-time web information, news searches, location-based queries, and when you need\n        fresh data not available in the AI model's training data.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The search term or question to look up online."
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of search: 'search' (general web), 'news', 'images', or 'places'. Default: 'search'"
+        },
+        "k": {
+          "type": "object",
+          "description": "Number of search results to retrieve. Default: 10"
+        },
+        "gl": {
+          "type": "string",
+          "description": "Country code to localize search results (e.g., 'us', 'uk', 'de'). Default: 'us'"
+        },
+        "hl": {
+          "type": "string",
+          "description": "Language code for the search interface (e.g., 'en', 'es', 'fr'). Default: 'en'"
+        },
+        "tbs": {
+          "type": "string",
+          "description": "Time-based search filter (e.g., 'qdr:d' for past day, 'qdr:w' for past week, 'qdr:m' for past month)"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "tavily_search": {
+    "class": "langchain_tavily.TavilySearch",
+    "base_tool_info_url": "https://pypi.org/project/langchain-tavily/",
+    "args": {
+      "max_results": 5,
+      "topic": "general",
+      "include_answer": false,
+      "include_raw_content": false,
+      "include_images": false,
+      "include_image_descriptions": false,
+      "include_favicon": false,
+      "search_depth": "basic",
+      "time_range": "day",
+      "include_domains": null,
+      "exclude_domains": null,
+      "country": null
+    }
+  },
+  "mysql": {
+    "class": "mysql.MySqlTool",
+    "description": "Execute a single read-only SQL SELECT against the connected MySQL database and return the rows. Discover the schema yourself via information_schema when unknown, e.g. \"SELECT table_name FROM information_schema.tables WHERE table_schema=DATABASE()\" and \"SELECT column_name, data_type FROM information_schema.columns WHERE table_name='<t>'\". NEVER ask the user to run SQL \\u2014 always call this tool. Only SELECT statements are permitted.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "sql": {
+          "type": "string",
+          "description": "The SQL query to run."
+        }
+      },
+      "required": [
+        "sql"
+      ]
+    }
+  },
+  "pinecone": {
+    "class": "pinecone_tool.PineconeTool",
+    "description": "Semantic search over an embedded knowledge base (Pinecone).",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The query."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "tavily": {
+    "class": "tavily_search.TavilySearch",
+    "description": "Grounded web search via Tavily.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The query."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "vector_search": {
+    "class": "toolbox.vector_search.VectorSearchTool",
+    "description": "Semantic search over the configured vector index; returns relevant passages.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The natural-language query to embed and search."
+        },
+        "top_k": {
+          "type": "string",
+          "description": "Maximum number of passages to return (default 5)."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  "vector_ingest": {
+    "class": "toolbox.vector_ingest.VectorIngestTool",
+    "description": "Ingest documents into the configured vector index (ops/write path; not chat-exposed).",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "description": "The kind of source to ingest (e.g. 'pdf', 'webpage', 'inline')."
+        },
+        "loader_args": {
+          "type": "object",
+          "description": "Loader-specific arguments (e.g. file paths or URLs) for the chosen source_type."
+        }
+      },
+      "required": [
+        "source_type"
+      ]
+    }
+  },
+  "memory_store": {
+    "class": "toolbox.memory_store.MemoryTool",
+    "description": "Read/write topic-scoped agent memory over the configured memory backend.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "The memory operation: 'read', 'write', 'search', 'list', or 'remove'."
+        },
+        "topic": {
+          "type": "string",
+          "description": "The topic key to read, write, or remove."
+        },
+        "content": {
+          "type": "string",
+          "description": "The content to store (for 'write') or the query text (for 'search')."
+        }
+      },
+      "required": [
+        "action"
+      ]
+    }
+  }
+}

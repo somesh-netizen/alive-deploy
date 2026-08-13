@@ -1,0 +1,99 @@
+{
+    "metadata": {
+    "description": "Customer support operations network with order and billing agents.",
+    "tags": [
+        "support",
+        "demo"
+    ],
+    "sample_queries": [
+        "Where is my order #10482?",
+        "What is your refund policy?"
+    ]
+},
+    include "config/llm_config.hocon"
+    "tools": [
+    {
+        "name": "SupportConcierge",
+        "function": {
+            "description": "Greet the user and route requests to the right specialist agent.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "inquiry": {
+                        "type": "string",
+                        "description": "The request for this agent."
+                    }
+                },
+                "required": [
+                    "inquiry"
+                ]
+            }
+        },
+        "instructions": "You are the front-line concierge. Understand the user's need and delegate to OrderOpsAgent or BillingAgent. ",
+        "tools": [
+            "OrderOpsAgent",
+            "BillingAgent"
+        ]
+    },
+    {
+        "name": "OrderOpsAgent",
+        "function": {
+            "description": "Handle order status, returns and refunds.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The user's order-related question."
+                    }
+                },
+                "required": [
+                    "query"
+                ]
+            }
+        },
+        "instructions": "You handle order status, returns and refunds. You have a MySQL tool over an `orders` table with columns: id (int), customer, status, total, carrier, tracking, updated. When asked about an order, DO NOT ask the user to run queries \u2014 call the MySQL tool yourself with a read-only SELECT, e.g. `SELECT id, status, carrier, tracking, updated FROM orders WHERE id = 10482`, then summarise the result in plain language. If the order isn't found, say so. ",
+        "tools": [
+            "MySQL"
+        ]
+    },
+    {
+        "name": "BillingAgent",
+        "function": {
+            "description": "Answer billing and invoice questions.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The user's billing question."
+                    }
+                },
+                "required": [
+                    "query"
+                ]
+            }
+        },
+        "instructions": "You answer billing and invoice questions politely and accurately. "
+    },
+    {
+        "name": "MySQL",
+        "function": {
+            "description": "Run a read-only SELECT against the orders MySQL database. Table `orders` columns: id, customer, status, total, carrier, tracking, updated.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sql": {
+                        "type": "string",
+                        "description": "The SQL query to run."
+                    }
+                },
+                "required": [
+                    "sql"
+                ]
+            }
+        },
+        "class": "mysql.MySqlTool"
+    }
+]
+}

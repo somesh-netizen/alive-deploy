@@ -1,0 +1,13 @@
+{
+    # Model selection with fallbacks. neuro-san drops any provider whose key or
+    # library isn't available, so configure one or more in the console / .env.
+    # Default (the console overwrites this with your Provider + Model choice).
+    # Real model IDs so it works out of the box for whichever key is present.
+    "llm_config": {
+        "fallbacks": [
+            { "class": "openai",       "model_name": "gpt-4o" },
+            { "class": "anthropic",    "model_name": "claude-sonnet-4-5" },
+            { "class": "gemini",       "model_name": "gemini-2.0-flash" }
+        ]
+    }
+}

@@ -1,0 +1,50 @@
+services:
+  customer_support_ops:
+    build: .
+    image: alive-customer_support_ops:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data          # holds the runtime .env written from the console UI
+    environment:
+      - ALIVE_NETWORK=customer_support_ops
+      # pgvector connection for the self-host vector store. Reachable at the
+      # `pgvector` service name; used only if a network selects the pgvector
+      # backend (in_memory needs none of this). Secrets come from the env / .env.
+      - POSTGRES_HOST=pgvector
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-alive}
+      - POSTGRES_USER=${POSTGRES_USER:-alive}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-alive}
+    # Lets tools reach a DB running on the host as `host.docker.internal`
+    # (Docker Desktop resolves it automatically; this makes it work on Linux too).
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # Wait for pgvector to be healthy so a pgvector-backed network can connect on
+    # first request. Harmless for in_memory bundles (pgvector just idles).
+    depends_on:
+      pgvector:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Self-host vector store (Postgres + the pgvector extension). In SaaS, managed
+  # Postgres+pgvector is the provisioning path instead (see P1-T15); in_memory
+  # remains the always-green default when no vector backend is configured.
+  pgvector:
+    image: pgvector/pgvector:pg16
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-alive}
+      - POSTGRES_USER=${POSTGRES_USER:-alive}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-alive}
+    volumes:
+      - pgvector-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-alive} -d ${POSTGRES_DB:-alive}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  pgvector-data:
